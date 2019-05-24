@@ -539,15 +539,14 @@ abstract class Monitor {
   }
 
   /**
-    * Submits an entire trace stored in CSV (Comma Separated Value format) format
-    * to the monitor, as an alternative to submitting events one by one. This method
-    * can only be called in offline monitoring.
+    * Submits a stream in CSV (Comma Separated Value format) format
+    * to the monitor, as an alternative to submitting events one by one.
     *
-    * @param file the log file in CSV format to be verified.
+    * @param reader the stream in CSV format to be verified.
     */
 
-  def submitCSVFile(file: String) {
-    val in: Reader = new BufferedReader(new FileReader(file))
+  def submitCSVFile(reader: Reader) {
+    val in: Reader = new BufferedReader(reader)
     // DEFAULT.withHeader()
     val records: Iterable[CSVRecord] = CSVFormat.DEFAULT.parse(in).asScala
     lineNr = 0

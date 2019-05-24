@@ -123,7 +123,7 @@ case class Spec(properties: List[Property]) {
   def translate(): Unit = {
     refreshMonitorTextIfDevelopment()
     openFile("TraceMonitor.scala")
-    writeln(ResourceReader.read("Monitor.txt"))
+    writeln(ResourceReader.read("/Monitor.txt"))
     writeln()
     for (property <- properties) {
       val name = property.name
@@ -204,7 +204,7 @@ case class Spec(properties: List[Property]) {
         |    if (1 <= args.length && args.length <= 3) {
         |      if (args.length > 1) Options.BITS = args(1).toInt
         |      val m = new PropertyMonitor
-        |      val file = args(0)
+        |      val file = if (args(0).equals("-")) new InputStreamReader(System.in) else new FileReader(args(0))
         |      if (args.length == 3 && args(2) == "debug") Options.DEBUG = true
         |      if (args.length == 3 && args(2) == "profile") Options.PROFILE = true
         |      try {
@@ -224,7 +224,7 @@ case class Spec(properties: List[Property]) {
         |      }
         |    } else {
         |      println("*** call with these arguments:")
-        |      println("<logfile> [<bits> [debug|profile]]")
+        |      println("<logfile or - > [<bits> [debug|profile]]")
         |    }
         |  }
         |}
