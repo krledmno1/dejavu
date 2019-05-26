@@ -207,6 +207,7 @@ case class Spec(properties: List[Property]) {
         |      val file = if (args(0).equals("-")) new InputStreamReader(System.in) else new FileReader(args(0))
         |      if (args.length == 3 && args(2) == "debug") Options.DEBUG = true
         |      if (args.length == 3 && args(2) == "profile") Options.PROFILE = true
+        |      if (args.length == 3 && args(2) == "print") Options.PRINT = true
         |      try {
         |        openResultFile("dejavu-results")
         |        if (Options.PROFILE) {

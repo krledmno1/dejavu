@@ -19,7 +19,7 @@ java -cp $DEJAVU/dejavu.jar dejavu.Verify $1 > /dev/null 2>&1
 scalac -cp .:$DEJAVU/dejavu.jar TraceMonitor.scala > /dev/null 2>&1
 
 # Run the compiled monitor on trace:
-scala -J-Xmx16g -cp .:$DEJAVU/dejavu.jar TraceMonitor - $BDDSIZE $DEBUG | egrep "\*\*\*"
+scala -J-Xmx16g -cp .:$DEJAVU/dejavu.jar TraceMonitor - $BDDSIZE $DEBUG | egrep "\*\*\*\*"
 
 # Clean up:
 rm *.class > /dev/null 2>&1

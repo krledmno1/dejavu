@@ -14,7 +14,7 @@ object Options {
   var PROFILE: Boolean = false
   var PRINT: Boolean = false
   var BITS: Int = 20
-  var PRINT_LINENUMBER_EACH: Int = 1000
+  var PRINT_LINENUMBER_EACH: Int = 1
   var UNIT_TEST: Boolean = false
   var STATISTICS: Boolean = true
 }
@@ -553,11 +553,11 @@ abstract class Monitor {
       lineNr += 1
       if (Options.PRINT && lineNr % Options.PRINT_LINENUMBER_EACH == 0) {
         if (lineNr >= 1000000)
-          println(lineNr.toDouble / 1000000 + " M")
+          println("\n**** " + lineNr.toDouble / 1000000 + " M")
         else if (lineNr >= 1000)
-          println(lineNr.toDouble / 1000 + " K")
+          println("\n**** " + lineNr.toDouble / 1000 + " K")
         else
-          println(lineNr.toDouble)
+          println("\n**** " + lineNr.toDouble)
       }
       val name = record.get(0)
       var args = new ListBuffer[Any]()
@@ -595,7 +595,7 @@ abstract class Monitor {
     debug(s"\n$state\n")
     for (formula <- formulae) {
       if (!formula.evaluate()) {
-        println(s"\n*** Property ${formula.name} violated on event number $lineNr:\n")
+        println(s"\n**** Property ${formula.name} violated on event number $lineNr:\n")
         println(state)
       }
     }
