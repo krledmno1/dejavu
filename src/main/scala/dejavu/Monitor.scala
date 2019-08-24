@@ -2,6 +2,8 @@ package dejavu
 
 /* Generic Monitoring Code common for all properties. */
 
+import java.io
+
 import net.sf.javabdd.{BDD, BDDFactory}
 import java.io._
 
@@ -544,6 +546,7 @@ abstract class Monitor {
     *
     * @param reader the stream in CSV format to be verified.
     */
+  val SYNC = "SYNC!"
 
   def submitCSVFile(reader: Reader) {
     val in: Reader = new BufferedReader(reader)
@@ -554,18 +557,21 @@ abstract class Monitor {
       lineNr += 1
       if (Options.PRINT && lineNr % Options.PRINT_LINENUMBER_EACH == 0) {
         if (lineNr >= 1000000)
-          println("\n**** " + lineNr.toDouble / 1000000 + " M")
+          println("\n**** Time point " + lineNr.toDouble / 1000000 + " M")
         else if (lineNr >= 1000)
-          println("\n**** " + lineNr.toDouble / 1000 + " K")
+          println("\n**** Time point " + lineNr.toDouble / 1000 + " K")
         else
-          println("\n**** " + lineNr.toDouble)
+          println("\n**** Time point " + lineNr.toDouble)
       }
       val name = record.get(0)
-      var args = new ListBuffer[Any]()
-      for (i <- 1 until record.size()) {
-        args += record.get(i)
+      if(name==SYNC) { println("\n**** "+SYNC); System.out.flush()}
+      else {
+        var args = new ListBuffer[Any]()
+        for (i <- 1 until record.size()) {
+          args += record.get(i)
+        }
+        submit(name, args.toList)
       }
-      submit(name, args.toList)
     }
     println(s"Processed $lineNr events")
     in.close()
@@ -596,7 +602,7 @@ abstract class Monitor {
     debug(s"\n$state\n")
     for (formula <- formulae) {
       if (!formula.evaluate()) {
-        println(s"\n**** Property ${formula.name} violated on event number $lineNr:\n")
+        println(s"\n**** Property violated on event number $lineNr:\n")
         println(state)
       }
     }
